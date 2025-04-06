@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscrição Corrida CAP Urbano</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 500px;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label, input, select, button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inscrição Corrida CAP Urbano</h1>
+
+  <form id="cadastroForm">
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
+
+    <label>Idade:</label>
+    <input type="number" name="idade" required>
+
+    <label>Gênero:</label>
+    <select name="genero" required>
+      <option value="">Selecione</option>
+      <option value="Masculino">Masculino</option>
+      <option value="Feminino">Feminino</option>
+      <option value="Outro">Outro</option>
+    </select>
+
+    <label>Telefone:</label>
+    <input type="tel" name="telefone" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" required>
+
+    <label>Modalidade:</label>
+    <select name="modalidade" required>
+      <option value="">Selecione</option>
+      <option value="Adulto">Adulto</option>
+      <option value="Idoso">Idoso</option>
+      <option value="Infantil">Infantil</option>
+    </select>
+
+    <button type="submit">Enviar Inscrição</button>
+  </form>
+
+  <p id="mensagem"></p>
+
+  <script>
+    const form = document.getElementById("cadastroForm");
+    const mensagem = document.getElementById("mensagem");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyW-0ycIB4_tTEBdFhb-Jl9f2Vsz4Ym0lSqzx6cL27BzW_NKQUSL9mViMZMNK3lwmGVFg/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.text();
+        mensagem.textContent = result;
+        form.reset();
+      } catch (error) {
+        mensagem.textContent = "❌ Erro ao enviar os dados.";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
